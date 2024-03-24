@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <title>Motorbike Data</title>
+    <link rel="stylesheet" type="text/css" href="static/styles.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Cabin+Sketch&display=swap" rel="stylesheet">
+</head>
+<body>
+    <h1>Motorbikes</h1>
+    <!-- Row with buttons for navigation -->
+    <div class="navigation-buttons">
+        <button onclick="location.href='/'">Database</button>
+        <button onclick="location.href='/charts.html'">Charts</button>
+    </div>
+    <table id='motorbike-table'>
+        <thead>
+            <tr>
+                <th onclick="sortTable(0)">
+                    Date<span class="arrow-up">&#9650;</span><span class="arrow-down">&#9660;</span>
+                </th>
+                <th onclick="sortTable(1)">
+                    Name<span class="arrow-up">&#9650;</span><span class="arrow-down">&#9660;</span>
+                </th>
+                <th onclick="sortTable(2)">
+                    Year<span class="arrow-up">&#9650;</span><span class="arrow-down">&#9660;</span>
+                </th>
+                <th onclick="sortTable(3)">
+                    Price<span class="arrow-up">&#9650;</span><span class="arrow-down">&#9660;</span>
+                </th>
+                <th>Description</th>
+                <th>URL</th>
+                <th>Location</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in rows %}
+            <tr>
+                <td class='date'>{{ row[0] }}</td>
+                <td>{{ row[1] }}</td>
+                <td>{{ row[2] }}</td>
+                <td class='price'>{{ row[3] }}</td>
+                <td class='description'>{{ row[4] }}</td>
+                <td><a href="{{ row[5] }}">Link</a></td>
+                <td class='location'>{{ row[6] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <script>
+        // JavaScript code for AJAX request and frontend sorting functionality
+
+        // Function to fetch data from the backend and update the frontend
+        function fetchDataAndUpdateFrontend() {
+            fetch('/api/data')  // Make an AJAX request to your backend API endpoint
+                .then(response => response.json())
+                .then(data => {
+                    // Process the data received from the backend and update the frontend
+                    updateFrontendWithData(data);
+                })
+                .catch(error => {
+                    // Handle errors
+                    console.error('Error:', error);
+                });
+        }
+
+        // Function to update the frontend with the data received from the backend
+        function updateFrontendWithData(data) {
+            // Update the HTML content of the table body with the data
+            var tableBody = document.getElementById('motorbike-table-body');
+            tableBody.innerHTML = '';  // Clear existing content
+            data.forEach(row => {
+                var rowHTML = `<tr>
+                    <td class='date'>${row.date}</td>
+                    <td>${row.name}</td>
+                    <td>${row.year}</td>
+                    <td class='price'>${row.price}</td>
+                    <td class='description'>${row.description}</td>
+                    <td><a href="${row.url}">Link</a></td>
+                    <td class='location'>${row.location}</td>
+                </tr>`;
+                tableBody.innerHTML += rowHTML;
+            });
+        }
+
+        // Function to initialize the frontend (called when the page loads)
+        function initializeFrontend() {
+            fetchDataAndUpdateFrontend();  // Fetch data from the backend and update the frontend
+        }
+
+        // Call the initializeFrontend function when the page loads
+        window.onload = initializeFrontend;
+    </script>
+    <script src="static/scripts.js"></script>
+    <script src="static/scripts.js"></script>
+</body>
+</html>
