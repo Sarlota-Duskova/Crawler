@@ -13,7 +13,7 @@
     <!-- Row with buttons for navigation -->
     <div class="navigation-buttons">
         <button onclick="location.href='/'">Database</button>
-        <button onclick="location.href='/charts.html'">Charts</button>
+        <button onclick="location.href='/templates/charts.html'">Charts</button>
     </div>
     <table id='motorbike-table'>
         <thead>
@@ -54,7 +54,7 @@
 
         // Function to fetch data from the backend and update the frontend
         function fetchDataAndUpdateFrontend() {
-            fetch('/api/data')  // Make an AJAX request to your backend API endpoint
+            fetch('https://sharley.pythonanywhere.com/api/data')  // Make an AJAX request to your backend API endpoint
                 .then(response => response.json())
                 .then(data => {
                     // Process the data received from the backend and update the frontend
